@@ -1,0 +1,7 @@
+# Stage 1
+FROM alpine:latest AS builder
+RUN echo "Building stage..."
+
+# Stage 2
+FROM nginx:latest
+COPY index.html /usr/share/nginx/html/index.html
