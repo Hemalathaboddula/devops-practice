@@ -8,7 +8,8 @@ pipeline {
                 sh '''
                 python3 -m venv venv
                 . venv/bin/activate
-                pip install -r requirements.txt
+                pip install --upgrade pip
+                pip install -r jenkins/requirements.txt
                 '''
             }
         }
@@ -17,21 +18,23 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                pytest
+                pytest jenkins/
                 '''
             }
         }
 
         stage('Build') {
             steps {
-                echo "Building calculator app"
+                echo "Build step completed"
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'chmod +x deploy.sh'
-                sh './deploy.sh'
+                sh '''
+                mkdir -p /tmp/app
+                cp jenkins/app.py /tmp/app/
+                '''
             }
         }
     }
